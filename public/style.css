@@ -75,14 +75,13 @@ body {
 
 .main {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(1 1fr);
+    grid-template-columns: 1fr .25fr;
     height: 100vh;
 }
 
 .main__left {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-rows: 1fr .11fr;
 }
 
 .main__controls {
@@ -121,15 +120,12 @@ body {
 }
 
 .main__videos {
+    background-color: white;
     display: flex;
-    flex-direction: column;
-    background-color: black;
-}
-
-#video-grid {
-    display: grid;
+    flex-grow: 1;
     justify-content: center;
     align-items: center;
+    padding: 40px;
 }
 
 video {
@@ -142,46 +138,40 @@ video {
 
 .main__header > h2 {
     font-size: 3em;
-    font-weight: 300px;
+    text-align: center;
 }
 
 .main__right {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-rows: .1fr 1fr .1fr;
+    justify-content: center;
+    color: white;
     background-color: #242324;
     border-left: 1px solid #3D3D42;
 }
 
-.main__header {
-    color: #F5F5F5;
+.main__title {
     text-align: center;
 }
 
 .main__chat__window {
-    flex-grow: 1;
     overflow: scroll;
 }
 
-.main__message__container {
-    padding: 22px 12px;
-    display: flex;
-}
 
 .messages{
     color: white;
     list-style: none;
 }
 
-.main__message_container {
-    padding: 22px 12px;
-    display: flex;
+.main__message__container {
+    align-self: center;
 }
 
-.main__message_container input {
-    flex-grow: 1;
+.main__message__container input {
     background-color: transparent;
+    color: rgb(255, 255, 255);
     border: none;
-    color: #F5F5F5;
 }
 
 .leave_meeting {

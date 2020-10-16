@@ -10,6 +10,8 @@ let peer = new Peer(undefined, {
 });
 
 let myVideoStream;
+const peers = {}
+
 
 //permite acceder a la cámara y el audio
 navigator.mediaDevices.getUserMedia({
@@ -30,24 +32,26 @@ navigator.mediaDevices.getUserMedia({
     socket.on('user-connected', (userId) => {
         connectToNewUser(userId, stream);
     })
+
+    let text = $('input')
+
+    $('html').keydown((e) => {
+        if (e.which == 13 && text.val().length !== 0) {
+            socket.emit('message', text.val());
+            text.val('')
+        }
+    });
+
+    socket.on('createMessage', message => {
+        $('.messages').append(`<li class="message"><b>user</b><br/> ${message} </li>`);
+        scrollToBottom()
+    })
 })
 
-let text = $('input')
 
-$('html').keydown((e) => {
-    if (e.which == 13 && text.val().length !== 0) {
-        socket.emit('message', text.val());
-        text.val('')
-    }
+socket.on('user-disconnected', userId => {
+    if (peers[userId]) peers[userId].close()
 })
-
-socket.on('createMessage', message => {
-    $('.messages').append(`<li class="message"><b>user</b><br/> ${message} </li>`)
-})
-
-// socket.on('user-disconnected', userId => {
-//     if (peers[userId]) peers[userId].close()
-// })
 
 peer.on('open', id => {
     socket.emit('join-room', ROOM_ID, id);
@@ -60,6 +64,11 @@ const connectToNewUser = (userId, stream) => {
     call.on('stream', userVideoStream => {
         addVideoStream(video, userVideoStream)
     })
+    call.on('close', () => {
+        video.remove()
+    })
+
+    peers[userId] = call
 }
 
 
